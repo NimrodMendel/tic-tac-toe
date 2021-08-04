@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -17,10 +17,11 @@ app.use(
 );
 
 /* Routes */
-app.get("/", (req, res) => {
-  res.send("Welcome to Tic Tac Toe server");
+app.get("/", (req: Request, res: Response): void => {
+  res.send("Hello world");
 });
 
-app.listen(PORT, () => {
+/* Start server */
+app.listen(PORT, (): void => {
   console.log(`Server is running on port: ${PORT}`);
 });
