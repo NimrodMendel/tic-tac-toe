@@ -2,22 +2,22 @@ import React from "react";
 
 export const Square = (prop: {
   value: String;
-  setValue: Function;
+  makeMove: Function;
   idx: Number;
 }) => {
-  const onClick = (e: any) => {
-    console.log(e.target.name, e.target.textContent);
-    //prop.setValue(e.target.name, e.target.textContent);
+  const { value, makeMove, idx } = prop;
+  const onClick = () => {
+    makeMove(idx);
   };
 
   return (
     <div>
       <button
-        name={String(prop.idx)}
+        name={String(idx)}
         onClick={onClick}
         className="border border-black w-full h-full text-3xl hover:bg-green-200"
       >
-        {prop.value}
+        {value}
       </button>
     </div>
   );
