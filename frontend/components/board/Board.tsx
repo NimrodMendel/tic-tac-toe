@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { loadBoard, saveBoard } from "../../pages/api/api";
+import { loadBoard, saveBoard } from "../../lib/api";
 import { Square } from "../Square/Square";
 
 const initialBoard: Array<string> = new Array(9).fill("");
@@ -67,10 +67,9 @@ export const Board = () => {
     }
   };
 
-  const getBoardData = async (): Promise<void> => {
-    const data = await loadBoard();
-    console.log(data);
-    //await setBoard(["X", "X", "O", "O", "X", "O", "O", "O", "X"]);
+  const getBoardData = async () => {
+    const { data } = await loadBoard();
+    setBoard(data.board);
   };
 
   const restartGame = (): void => {
@@ -78,9 +77,8 @@ export const Board = () => {
     setPlayer("O");
   };
 
-  const save = () => {
-    console.log("Board saved");
-    saveBoard(board, "X");
+  const save = async () => {
+    const res = await saveBoard(board, player);
   };
 
   useEffect(() => {
@@ -95,15 +93,13 @@ export const Board = () => {
   }, [board]);
 
   useEffect(() => {
-    if (result.player && result.gameResult) {
+    if (result.player !== "NA") {
       alert(`Player: ${result.player} has one the game!`);
-      restartGame();
+    } else {
+      alert("It's a tie!");
     }
+    restartGame();
   }, [result]);
-
-  useEffect(() => {
-    getBoardData();
-  }, []);
 
   return (
     <>
@@ -128,7 +124,7 @@ export const Board = () => {
           Restart Game
         </button>
         <button
-          onClick={restartGame}
+          onClick={getBoardData}
           className="py-2 px-3 rounded-full bg-yellow-300 shadow-2xl duration-500 ease-in-out hover:bg-yellow-500 hover:text-white"
         >
           Load Last Board

@@ -1,11 +1,9 @@
 import express, { Request, Response } from "express";
-
+import { saveData, readData } from "../controllers/game.controller";
 const router = express.Router();
 
-// router.get("/", (req: Request, res: Response) => {
-//   res.send("hello");
-// });
+router.get("/", readData);
 
-// router.post("/");
+router.post("/", saveData);
 
 export default router;
