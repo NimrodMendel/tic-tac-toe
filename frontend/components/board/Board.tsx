@@ -17,7 +17,7 @@ const winningPatterns = [
 
 export const Board = () => {
   const [board, setBoard] = useState(initialBoard); //  Set initial board
-  const [player, setPlayer] = useState("O");
+  const [player, setPlayer] = useState("X");
   const [result, setResult] = useState({ player: "", gameResult: "" });
 
   const makeMove = (idx: number): void => {
@@ -77,8 +77,9 @@ export const Board = () => {
     setPlayer("O");
   };
 
-  const save = async () => {
-    const res = await saveBoard(board, player);
+  const saveGame = async () => {
+    const data = await saveBoard(board, player);
+    alert(data);
   };
 
   useEffect(() => {
@@ -93,12 +94,13 @@ export const Board = () => {
   }, [board]);
 
   useEffect(() => {
-    if (result.player !== "NA") {
+    if (result.player !== "NA" && result.gameResult === "Win") {
       alert(`Player: ${result.player} has one the game!`);
-    } else {
+    } else if (result.player === "NA" && result.gameResult === "Tie") {
       alert("It's a tie!");
     }
     restartGame();
+    setPlayer("O");
   }, [result]);
 
   return (
@@ -112,7 +114,7 @@ export const Board = () => {
       </div>
       <div className="flex mx-auto justify-center mt-10">
         <button
-          onClick={save}
+          onClick={saveGame}
           className="py-2 px-3 mr-5 rounded-full bg-green-300 shadow-2xl duration-500 ease-in-out hover:bg-green-500 hover:text-white"
         >
           Save Board
